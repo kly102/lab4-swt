@@ -63,7 +63,7 @@ public class testcategory {
         nameField.clear();
 
         WebElement submitButton = new WebDriverWait(driver, Duration.ofSeconds(10))
-                .until(ExpectedConditions.elementToBeClickable(By.xpath("//*[@id=\"editCategoryModal\"]/div/div/form/div[3]/input")));
+                .until(ExpectedConditions.elementToBeClickable(By.xpath("//*[@id=\"editEmployeeModal\"]/div/div/form/div[3]/input")));
         submitButton.click();
 
         String validationMessage = nameField.getAttribute("validationMessage");
@@ -79,7 +79,7 @@ public class testcategory {
         descriptionField.clear();
 
         WebElement submitButton = new WebDriverWait(driver, Duration.ofSeconds(10))
-                .until(ExpectedConditions.elementToBeClickable(By.xpath("//*[@id=\"editCategoryModal\"]/div/div/form/div[3]/input")));
+                .until(ExpectedConditions.elementToBeClickable(By.xpath("//*[@id=\"editEmployeeModal\"]/div/div/form/div[3]/input")));
         submitButton.click();
 
         String validationMessage = descriptionField.getAttribute("validationMessage");
@@ -99,7 +99,7 @@ public class testcategory {
         descriptionField.clear();
         descriptionField.sendKeys("This is an updated category description.");
 
-        WebElement submitButton = driver.findElement(By.xpath("//*[@id=\"editCategoryModal\"]/div/div/form/div[3]/input"));
+        WebElement submitButton = driver.findElement(By.xpath("//*[@id=\"editEmployeeModal\"]/div/div/form/div[3]/input"));
         submitButton.click();
 
         new WebDriverWait(driver, Duration.ofSeconds(10))
@@ -107,23 +107,23 @@ public class testcategory {
 
         assertTrue(driver.getCurrentUrl().contains("/categories"));
 
-        WebElement updatedCategoryName = driver.findElement(By.xpath("/html/body/div[1]/div/table/tbody/tr[1]/td[2]"));
+        WebElement updatedCategoryName = driver.findElement(By.xpath("//*[@id=\"editEmployeeModal\"]/div/div/form/div[2]/div[2]/input"));
         assertEquals("Updated Category", updatedCategoryName.getText());
 
-        WebElement updatedCategoryDescription = driver.findElement(By.xpath("/html/body/div[1]/div/table/tbody/tr[1]/td[3]"));
+        WebElement updatedCategoryDescription = driver.findElement(By.xpath("//*[@id=\"editEmployeeModal\"]/div/div/form/div[2]/div[2]/input"));
         assertEquals("This is an updated category description.", updatedCategoryDescription.getText());
     }
 
     private void login() {
         try {
             WebElement usernameField = new WebDriverWait(driver, Duration.ofSeconds(10))
-                    .until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@id=\"logreg-forms\"]/form/div[2]/input")));
+                    .until(ExpectedConditions.visibilityOfElementLocated(By.name("email")));
             usernameField.sendKeys("aaa");
 
-            WebElement passwordField = driver.findElement(By.xpath("//*[@id=\"logreg-forms\"]/form/div[3]/input"));
+            WebElement passwordField = driver.findElement(By.name("password"));
             passwordField.sendKeys("123456");
 
-            WebElement loginButton = driver.findElement(By.xpath("//*[@id=\"logreg-forms\"]/form/div[4]/button[1]"));
+            WebElement loginButton = driver.findElement(By.xpath("//button[text()='Login']"));
             loginButton.click();
         } catch (Exception e) {
             System.out.println("Error in login: " + e.getMessage());
@@ -133,7 +133,7 @@ public class testcategory {
     private void navigateToCategories() {
         try {
             WebElement categoriesLink = new WebDriverWait(driver, Duration.ofSeconds(10))
-                    .until(ExpectedConditions.elementToBeClickable(By.xpath("//*[@id=\"navbarSupportedContent\"]/ul/li[6]/a")));
+                    .until(ExpectedConditions.elementToBeClickable(By.xpath("//a[contains(text(),'Quản lý thể loại')]")));
             categoriesLink.click();
         } catch (Exception e) {
             System.out.println("Error in navigateToCategories: " + e.getMessage());
@@ -143,12 +143,12 @@ public class testcategory {
     private void editFirstCategory() {
         try {
             WebElement editButton = new WebDriverWait(driver, Duration.ofSeconds(10))
-                    .until(ExpectedConditions.elementToBeClickable(By.xpath("/html/body/div[1]/div/table/tbody/tr[1]/td[5]/a[1]/i")));
+                    .until(ExpectedConditions.elementToBeClickable(By.xpath("//*[@id=\"editEmployeeModal\"]/div/div/form/div[2]/div[2]/input")));
             editButton.click();
 
-            WebElement editField = new WebDriverWait(driver, Duration.ofSeconds(10))
-                    .until(ExpectedConditions.elementToBeClickable(By.xpath("//*[@id=\"editCategoryModal\"]/div/div/form/div[2]/div[4]/input")));
-            editField.click();
+            new WebDriverWait(driver, Duration.ofSeconds(10))
+                    .until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@id=\"editEmployeeModal\"]/div/div/form/div[3]/input")));
+
         } catch (Exception e) {
             System.out.println("Error in editFirstCategory: " + e.getMessage());
         }
