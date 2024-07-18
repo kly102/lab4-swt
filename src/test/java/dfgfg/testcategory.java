@@ -10,6 +10,7 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -17,7 +18,6 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import java.time.Duration;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  *
@@ -26,8 +26,8 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 public class testcategory {
 
     private static WebDriver driver;
-    private static final String driverPath = "C:\\Users\\admin\\Downloads\\chromedriver-win64\\chromedriver-win64";
-    private static final String BASE_URL = "http://localhost:8080/AzanShop/managerCategory";
+    private static final String driverPath = "C:\\Users\\admin\\Downloads\\chromedriver-win64\\chromedriver-win64\\chromedriver.exe";
+    private static final String BASE_URL = "http://localhost:8080/AzanShop/home";
 
     @BeforeAll
     public static void setUpClass() {
@@ -63,10 +63,11 @@ public class testcategory {
         nameField.clear();
 
         WebElement submitButton = new WebDriverWait(driver, Duration.ofSeconds(10))
-                .until(ExpectedConditions.elementToBeClickable(By.xpath("//*[@id=\"editEmployeeModal\"]/div/div/form/div[3]/input")));
+                .until(ExpectedConditions.elementToBeClickable(By.xpath("//*[@id='editEmployeeModal']//input[@type='submit']")));
         submitButton.click();
 
-        String validationMessage = nameField.getAttribute("validationMessage");
+        WebElement validationMessageElement = driver.findElement(By.xpath("//*[@id='editEmployeeModal']//input[@name='name']"));
+        String validationMessage = validationMessageElement.getAttribute("validationMessage");
         assertEquals("Please fill out this field.", validationMessage);
     }
 
@@ -79,10 +80,11 @@ public class testcategory {
         descriptionField.clear();
 
         WebElement submitButton = new WebDriverWait(driver, Duration.ofSeconds(10))
-                .until(ExpectedConditions.elementToBeClickable(By.xpath("//*[@id=\"editEmployeeModal\"]/div/div/form/div[3]/input")));
+                .until(ExpectedConditions.elementToBeClickable(By.xpath("//*[@id='editEmployeeModal']//input[@type='submit']")));
         submitButton.click();
 
-        String validationMessage = descriptionField.getAttribute("validationMessage");
+        WebElement validationMessageElement = driver.findElement(By.xpath("//*[@id='editEmployeeModal']//input[@name='description']"));
+        String validationMessage = validationMessageElement.getAttribute("validationMessage");
         assertEquals("Please fill out this field.", validationMessage);
     }
 
@@ -99,7 +101,7 @@ public class testcategory {
         descriptionField.clear();
         descriptionField.sendKeys("This is an updated category description.");
 
-        WebElement submitButton = driver.findElement(By.xpath("//*[@id=\"editEmployeeModal\"]/div/div/form/div[3]/input"));
+        WebElement submitButton = driver.findElement(By.xpath("//*[@id='editEmployeeModal']//input[@type='submit']"));
         submitButton.click();
 
         new WebDriverWait(driver, Duration.ofSeconds(10))
@@ -107,10 +109,10 @@ public class testcategory {
 
         assertTrue(driver.getCurrentUrl().contains("/categories"));
 
-        WebElement updatedCategoryName = driver.findElement(By.xpath("//*[@id=\"editEmployeeModal\"]/div/div/form/div[2]/div[2]/input"));
+        WebElement updatedCategoryName = driver.findElement(By.xpath("//td[text()='Updated Category']"));
         assertEquals("Updated Category", updatedCategoryName.getText());
 
-        WebElement updatedCategoryDescription = driver.findElement(By.xpath("//*[@id=\"editEmployeeModal\"]/div/div/form/div[2]/div[2]/input"));
+        WebElement updatedCategoryDescription = driver.findElement(By.xpath("//td[text()='This is an updated category description.']"));
         assertEquals("This is an updated category description.", updatedCategoryDescription.getText());
     }
 
@@ -143,12 +145,11 @@ public class testcategory {
     private void editFirstCategory() {
         try {
             WebElement editButton = new WebDriverWait(driver, Duration.ofSeconds(10))
-                    .until(ExpectedConditions.elementToBeClickable(By.xpath("//*[@id=\"editEmployeeModal\"]/div/div/form/div[2]/div[2]/input")));
+                    .until(ExpectedConditions.elementToBeClickable(By.xpath("//*[@id='editEmployeeModal']//button[contains(text(),'Edit')]")));
             editButton.click();
 
             new WebDriverWait(driver, Duration.ofSeconds(10))
-                    .until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@id=\"editEmployeeModal\"]/div/div/form/div[3]/input")));
-
+                    .until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@id='editEmployeeModal']//input[@type='submit']")));
         } catch (Exception e) {
             System.out.println("Error in editFirstCategory: " + e.getMessage());
         }
